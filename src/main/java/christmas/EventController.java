@@ -24,7 +24,14 @@ public class EventController {
     }
 
     public void inputOrder() {
-        orders = inputView.orderMenu();
+        while (true) {
+            try {
+                orders = inputView.orderMenu();
+                break;
+            } catch (IllegalArgumentException e) {
+                outputView.print(e.getMessage());
+            }
+        }
     }
 
     public void previewBenefits() {
