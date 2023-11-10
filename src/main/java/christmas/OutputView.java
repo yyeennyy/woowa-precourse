@@ -1,5 +1,6 @@
 package christmas;
 
+
 import java.util.List;
 
 public class OutputView {
@@ -21,8 +22,13 @@ public class OutputView {
         newLine();
     }
 
-    public void priceBeforeBenefits() {
+    public void priceBeforeBenefits(List<Order> orders) {
         System.out.println(Message.GUIDE_OF_ORIGIN_PRICE.get());
+        int totalPrice = 0;
+        for (Order order : orders) {
+            totalPrice += Menu.getPrice(order.getMenu());
+        }
+        System.out.println(Util.toMoneyFormat(totalPrice) + Unit.WON.get());
         newLine();
     }
 

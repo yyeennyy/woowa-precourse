@@ -37,7 +37,7 @@ public class EventController {
     public void previewBenefits() {
         outputView.startToGuideBenefits();
         outputView.orderedMenu(orders);
-        outputView.priceBeforeBenefits();
+        outputView.priceBeforeBenefits(orders);
         outputView.freeMenu();
         outputView.benefitsList();
         outputView.totalBenefitsMoney();
