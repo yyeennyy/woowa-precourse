@@ -1,4 +1,6 @@
-package christmas;
+package christmas.constant;
+
+import java.util.List;
 
 public enum Unit {
     WON("원"),
@@ -13,4 +15,5 @@ public enum Unit {
     public String get() {
         return unit;
     }
+
 }

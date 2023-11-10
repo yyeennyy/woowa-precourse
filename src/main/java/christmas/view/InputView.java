@@ -1,6 +1,12 @@
-package christmas;
+package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.domain.Order;
+import christmas.Validator;
+import christmas.constant.ErrorMessage;
+import christmas.constant.Message;
+import christmas.domain.Dish;
+import christmas.domain.Menu;
 
 import java.util.*;
 

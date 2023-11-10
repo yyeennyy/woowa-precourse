@@ -8,6 +8,7 @@ public class Application {
         eventController.inputDate();
         eventController.inputOrder();
 
+        eventController.setBenefits();
         eventController.previewBenefits();
     }
 }

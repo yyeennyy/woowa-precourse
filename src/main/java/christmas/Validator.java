@@ -1,5 +1,7 @@
 package christmas;
 
+import christmas.constant.ErrorMessage;
+
 public class Validator {
 
     public static int checkDate(String dateInput) throws IllegalArgumentException {

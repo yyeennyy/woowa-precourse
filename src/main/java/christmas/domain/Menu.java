@@ -1,4 +1,4 @@
-package christmas;
+package christmas.domain;
 
 public enum Menu {
     양송이수프("애피타이저",  "양송이수프", 6000),

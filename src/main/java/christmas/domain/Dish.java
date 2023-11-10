@@ -1,4 +1,4 @@
-package christmas;
+package christmas.domain;
 
 public class Dish {
     private final String name;

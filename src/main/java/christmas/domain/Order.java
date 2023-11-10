@@ -1,4 +1,6 @@
-package christmas;
+package christmas.domain;
+
+import christmas.domain.Dish;
 
 public class Order {
     private final Dish dish;
