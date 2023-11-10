@@ -9,7 +9,7 @@ public enum Message {
     GUIDE_OF_ORIGIN_PRICE("<할인 전 총주문 금액>"),
     GUIDE_OF_FREE_MENU("<증정 메뉴>"),
     GUID_OF_BENEFITS_NAMES("<혜택 내역>"),
-    GUIDE_OF_AMOUNT_OF_BENEFIT("<총 혜택 금액>"),
+    GUIDE_OF_AMOUNT_OF_BENEFIT("<총혜택 금액>"),
     GUIDE_OF_BENEFITS_PRICE("<할인 후 예상 결제 금액>"),
     GUIDE_EVENT_BADGE("<12월 이벤트 배지>"),
     NOT_EXIST("없음"),

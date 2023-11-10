@@ -30,7 +30,12 @@ public class InputView {
             if (!Menu.exist(menu)) {
                 throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_NAME.get());
             }
-            int count = Integer.parseInt(menuAndCount.get(1));
+            int count;
+            try {
+                count = Integer.parseInt(menuAndCount.get(1));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_COUNT.get());
+            }
             if(orderInfo.containsKey(menu)) {
                 throw new IllegalArgumentException(ErrorMessage.DUPLICATED_MENU.get());
             }
