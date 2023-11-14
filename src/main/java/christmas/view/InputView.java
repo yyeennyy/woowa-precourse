@@ -16,6 +16,7 @@ public class InputView {
         System.out.println(Message.INPUT_VISIT_DATE.get());
         String input = Console.readLine();
         int date = Validator.checkDate(input);
+        Message.INPUT_VISIT_DATE.setDate(date);
         return date;
     }
 

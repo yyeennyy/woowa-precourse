@@ -1,5 +1,6 @@
 package christmas;
 
+import christmas.constant.Message;
 import christmas.domain.Benefits;
 import christmas.domain.Menu;
 import christmas.domain.Order;

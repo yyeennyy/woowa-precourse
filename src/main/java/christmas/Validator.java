@@ -11,10 +11,14 @@ public class Validator {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_DATE.get());
         }
+        checkDateRange(date);
+        return date;
+    }
+
+    public static void checkDateRange(int date) {
         if (date < 1 || date > 31) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_DATE.get());
         }
-        return date;
     }
 
     public static int checkInteger(String input) throws NumberFormatException {
