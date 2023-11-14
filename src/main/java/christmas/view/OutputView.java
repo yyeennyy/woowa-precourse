@@ -1,12 +1,10 @@
 package christmas.view;
 
-
 import christmas.domain.Order;
 import christmas.Util;
-import christmas.constant.Message;
-import christmas.constant.Unit;
+import christmas.setting.Message;
+import christmas.setting.Unit;
 import christmas.domain.Benefits;
-import christmas.domain.Menu;
 
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class OutputView {
         newLine();
     }
 
-    public void printPriceBeforeBenefits(int price) {
+    public void printAmountBeforeBenefits(int price) {
         System.out.println(Message.GUIDE_OF_ORIGIN_PRICE.get());
         System.out.println(Util.toMoneyFormat(price));
         newLine();
@@ -53,7 +51,7 @@ public class OutputView {
             newLine();
             return;
         }
-        System.out.println(benefits.getAllBenefitsList());
+        System.out.println(benefits.getBenefitsSummary());
         newLine();
     }
 
@@ -64,18 +62,18 @@ public class OutputView {
             newLine();
             return;
         }
-        System.out.println(Util.toMoneyFormat(benefits.getAllBenefitsPrice() * -1));
+        System.out.println(Util.toMoneyFormat(benefits.getAllBenefits() * -1));
         newLine();
     }
 
-    public void priceAfterBenefits(int totalPrice, Benefits benefits) {
+    public void printAmountAfterBenefits(int totalPrice, Benefits benefits) {
         System.out.println(Message.GUIDE_OF_BENEFITS_PRICE.get());
         if (benefits == null) {
             System.out.println(Util.toMoneyFormat(totalPrice));
             newLine();
             return;
         }
-        System.out.println(Util.toMoneyFormat(totalPrice - benefits.getDiscountPrice()));
+        System.out.println(Util.toMoneyFormat(totalPrice - benefits.getEffectiveDiscount()));
         newLine();
     }
 
@@ -86,20 +84,7 @@ public class OutputView {
             newLine();
             return;
         }
-        int benefitPrice = benefits.getAllBenefitsPrice();
-        if (benefitPrice >= 20000) {
-            System.out.println("산타");
-            return;
-        }
-        if (benefitPrice >= 10000) {
-            System.out.println("트리");
-            return;
-        }
-        if (benefitPrice >= 5000) {
-            System.out.println("별");
-            return;
-        }
-        System.out.println("없음");
+        System.out.println(benefits.getBadge().get());
     }
 
     public void newLine() {
@@ -109,5 +94,4 @@ public class OutputView {
     public void print(String message) {
         System.out.println(message);
     }
-
 }

@@ -1,4 +1,4 @@
-package christmas.constant;
+package christmas.setting;
 
 public enum Category {
     애피타이저("애피타이저"),
@@ -6,9 +6,6 @@ public enum Category {
     디저트("디저트"),
     음료("음료");
 
-    private String category;
-
     Category(String category) {
-        this.category = category;
     }
 }

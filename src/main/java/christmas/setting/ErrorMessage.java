@@ -1,6 +1,4 @@
-package christmas.constant;
-
-import java.io.Console;
+package christmas.setting;
 
 public enum ErrorMessage {
     INVALID_DATE("유효하지 않은 날짜입니다."),

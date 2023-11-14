@@ -1,6 +1,4 @@
-package christmas.constant;
-
-import java.util.List;
+package christmas.setting;
 
 public enum Unit {
     WON("원"),

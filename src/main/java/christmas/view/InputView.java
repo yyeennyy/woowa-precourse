@@ -3,11 +3,11 @@ package christmas.view;
 import camp.nextstep.edu.missionutils.Console;
 import christmas.domain.Order;
 import christmas.Validator;
-import christmas.constant.ErrorMessage;
-import christmas.constant.Message;
+import christmas.setting.Category;
+import christmas.setting.ErrorMessage;
+import christmas.setting.Message;
 import christmas.domain.Dish;
 import christmas.domain.Menu;
-
 import java.util.*;
 
 public class InputView {
@@ -64,7 +64,7 @@ public class InputView {
 
     private boolean isDrinkOnly(List<Order> orders) {
         for (Order order : orders) {
-            if (!Menu.getCategory(order.getMenu()).equals("음료")) {
+            if (!Menu.getCategory(order.getMenu()).equals(Category.음료)) {
                 return false;
             }
         }

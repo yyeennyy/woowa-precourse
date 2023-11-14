@@ -1,4 +1,4 @@
-package christmas.constant;
+package christmas.setting;
 
 import christmas.Validator;
 
@@ -26,7 +26,7 @@ public enum Message {
 
     public void setDate(int date) {
         Validator.checkDateRange(date);
-        this.date = date;
+        Message.date = date;
     }
 
     public String get() {

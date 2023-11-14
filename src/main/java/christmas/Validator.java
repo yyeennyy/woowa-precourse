@@ -1,6 +1,6 @@
 package christmas;
 
-import christmas.constant.ErrorMessage;
+import christmas.setting.ErrorMessage;
 
 public class Validator {
 

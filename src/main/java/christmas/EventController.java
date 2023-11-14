@@ -1,6 +1,6 @@
 package christmas;
 
-import christmas.constant.Config;
+import christmas.setting.Config;
 import christmas.domain.Benefits;
 import christmas.domain.Menu;
 import christmas.domain.Order;
@@ -42,36 +42,35 @@ public class EventController {
     }
 
     public void setBenefits() {
-        int totalPrice = getTotalPrice();
-        if (totalPrice >= Config.BENEFIT_THRESHOLD.get()) {
+        int originAmount = getOriginAmount();
+        if (originAmount >= Config.BENEFIT_THRESHOLD.get()) {
             benefits = new Benefits();
             benefits.setChristmas(date);
-            benefits.setFreeMenu(totalPrice);
+            benefits.setFreeMenu(originAmount);
             benefits.setWeekdayDessert(date, orders);
             benefits.setWeekendMain(date, orders);
             benefits.setSpecial(date);
-
             benefits.setBadge();
         }
     }
 
-    private int getTotalPrice() {
-        int totalPrice = 0;
+    private int getOriginAmount() {
+        int sum = 0;
         for (Order order : orders) {
-            totalPrice += Menu.getPrice(order.getMenu()) * order.getCount();
+            sum += Menu.getPrice(order.getMenu()) * order.getCount();
         }
-        return totalPrice;
+        return sum;
     }
 
     public void previewBenefits() {
-        int originPrice = getTotalPrice();
+        int originAmount = getOriginAmount();
         outputView.startToGuideBenefits();
         outputView.orderedMenu(orders);
-        outputView.printPriceBeforeBenefits(originPrice);
+        outputView.printAmountBeforeBenefits(originAmount);
         outputView.freeMenu(benefits);
         outputView.benefitsList(benefits);
         outputView.totalBenefitsMoney(benefits);
-        outputView.priceAfterBenefits(originPrice, benefits);
+        outputView.printAmountAfterBenefits(originAmount, benefits);
         outputView.aboutBadge(benefits);
     }
 }

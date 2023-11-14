@@ -1,8 +1,7 @@
 package christmas;
 
-import christmas.constant.Unit;
-import christmas.constant.Week;
-
+import christmas.setting.Unit;
+import christmas.setting.Week;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -49,9 +48,10 @@ public class Util {
     public static boolean isWeekend(int date) {
         Week week = getWeek(date);
 
-        if (week.equals(Week.FRI) || week.equals(Week.SAT)) {
-            return true;
-        }
-        return false;
+        return week.equals(Week.FRI) || week.equals(Week.SAT);
+    }
+
+    public static String newLine() {
+        return "\n";
     }
 }

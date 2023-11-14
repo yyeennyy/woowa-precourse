@@ -1,10 +1,7 @@
 package christmas.domain;
 
 import christmas.Util;
-import christmas.constant.Category;
-import christmas.constant.Message;
-import christmas.constant.SpecialDay;
-
+import christmas.setting.*;
 import java.util.List;
 
 public class Benefits {
@@ -13,47 +10,47 @@ public class Benefits {
     private int weekendMain;
     private int special;
     private Menu freeMenu;
-    private String badge;
+    private Badge badge;
+    private static final String colon = ": ";
+    private static final int sign = -1;
 
-
-    public String getAllBenefitsList() {
-        StringBuilder benefits = new StringBuilder();
-        if (christmas != 0) {
-            benefits.append("크리스마스 디데이 할인: ");
-            benefits.append(Util.toMoneyFormat(christmas * -1));
-            benefits.append("\n");
-        }
-        if (weekdayDessert != 0) {
-            benefits.append("평일 할인: ");
-            benefits.append(Util.toMoneyFormat(weekdayDessert * -1));
-            benefits.append("\n");
-        }
-        if (weekendMain != 0) {
-            benefits.append("주말 할인: ");
-            benefits.append(Util.toMoneyFormat(weekendMain * -1));
-            benefits.append("\n");
-        }
-        if (special != 0) {
-            benefits.append("특별 할인: ");
-            benefits.append(Util.toMoneyFormat(special * -1));
-            benefits.append("\n");
-        }
-        if (freeMenu != null) {
-            benefits.append("증정 이벤트: ");
-            benefits.append(Util.toMoneyFormat(freeMenu.getPrice() * -1));
-            benefits.append("\n");
-        }
-        return benefits.toString().trim();
+    public String getBenefitsSummary() {
+        String summary = getDiscountSummary(DiscountPolicy.CHRISTMAS, christmas) +
+                getDiscountSummary(DiscountPolicy.WEEKDAY, weekdayDessert) +
+                getDiscountSummary(DiscountPolicy.WEEKEND, weekendMain) +
+                getDiscountSummary(DiscountPolicy.SPECIAL, special) +
+                getDiscountSummary(DiscountPolicy.GIFT, freeMenu);
+        return summary.trim();
     }
 
-    public int getAllBenefitsPrice() {
+    private String getDiscountSummary(DiscountPolicy policy, int discountAmount) {
+        StringBuilder sb = new StringBuilder();
+        if (discountAmount != Config.ZERO_PRICE.get()) {
+            sb.append(policy.get()).append(colon);
+            sb.append(Util.toMoneyFormat(discountAmount * sign));
+            sb.append(Util.newLine());
+        }
+        return sb.toString();
+    }
+
+    private String getDiscountSummary(DiscountPolicy policy, Menu menu) {
+        StringBuilder sb = new StringBuilder();
+        if (menu != null) {
+            sb.append(policy.get()).append(colon);
+            sb.append(Util.toMoneyFormat(menu.getPrice() * sign));
+            sb.append(Util.newLine());
+        }
+        return sb.toString();
+    }
+
+    public int getAllBenefits() {
         if (freeMenu != null) {
             return (christmas + weekdayDessert + weekendMain + special + freeMenu.getPrice());
         }
-        return getDiscountPrice();
+        return getEffectiveDiscount();
     }
 
-    public int getDiscountPrice() {
+    public int getEffectiveDiscount() {
         return (christmas + weekdayDessert + weekendMain + special);
     }
 
@@ -64,10 +61,15 @@ public class Benefits {
         return Message.NOT_EXIST.get();
     }
 
+    public Badge getBadge() {
+        return this.badge;
+    }
+
     public void setChristmas(int date) {
-        int discount = 1000;
-        for (int i = 2; i <= 25; i++) {
-            discount += 100;
+        int discount = DiscountPolicy.CHRISTMAS_INIT.getDiscount();
+
+        for (int i = SpecialDates.SECOND_DAY; i <= SpecialDates.CHRISTMAS; i++) {
+            discount += DiscountPolicy.CHRISTMAS.getDiscount();
             if (i == date) {
                 break;
             }
@@ -77,58 +79,62 @@ public class Benefits {
     }
 
     public void setWeekdayDessert(int date, List<Order> orders) {
-        // 디저트 메뉴 개수 세기
-        int count = 0;
-        for (Order order : orders) {
-            if (Menu.getCategory(order.getMenu()).equals(Category.디저트)) {
-                count += order.getCount();
-            }
-        }
+        int count = countMenuByCategory(Category.디저트, orders);
         if (!Util.isWeekend(date)) {
-            // 디저트 총액을 고려하여 할인될 수 있는 액수
-            int discoutable = 2023 * count;
-            this.weekdayDessert = discoutable;  // TODO: 0이하 방지해야 함
+            this.weekdayDessert = DiscountPolicy.WEEKDAY.getDiscount() * count;
             return;
         }
         this.weekdayDessert = 0;
     }
 
     public void setWeekendMain(int date, List<Order> orders) {
-        // 메인 메뉴 개수 세기
-        int count = 0;
-        for (Order order : orders) {
-            if (Menu.getCategory(order.getMenu()).equals(Category.메인)) {
-                count++;
-            }
-        }
+        int count = countMenuByCategory(Category.메인, orders);
         if (Util.isWeekend(date)) {
-            int discountable = 2023 * count;
-            this.weekendMain = discountable;
+            this.weekendMain = DiscountPolicy.WEEKEND.getDiscount() * count;
+            return;
         }
         this.weekendMain = 0;
     }
 
+    private int countMenuByCategory(Category category, List<Order> orders) {
+        int count = 0;
+        for (Order order : orders) {
+            if (Menu.getCategory(order.getMenu()).equals(category)) {
+                count += order.getCount();
+            }
+        }
+        return count;
+    }
+
     public void setSpecial(int date) {
-        if (SpecialDay.isSpecialDay(date)) {
-            this.special = 1000;
+        if (SpecialDates.isSpecialDay(date)) {
+            this.special = DiscountPolicy.SPECIAL.getDiscount();
             return;
         }
         this.special = 0;
     }
 
-    public void setFreeMenu(int totalPrice) {
-        if (totalPrice >= 120000) {
-            this.freeMenu = Menu.샴페인;
+    public void setFreeMenu(int originAmount) {
+        if (originAmount >= Config.GIFT_THRESHOLD.get()) {
+            this.freeMenu = Menu.SPECIAL_MENU;
             return;
         }
         this.freeMenu = null;
     }
 
     public void setBadge() {
-
+        int benefitAmount = getAllBenefits();
+        if (canBadge(benefitAmount, Badge.SANTA)) return;
+        if (canBadge(benefitAmount, Badge.TREE)) return;
+        if (canBadge(benefitAmount, Badge.STAR)) return;
+        this.badge = null;
     }
 
-    public void setBenefits(int date, int totalPrice) {
-
+    private boolean canBadge(int benefitAmount, Badge badge) {
+        if (benefitAmount >= badge.getThreshold()) {
+            this.badge = badge;
+            return true;
+        }
+        return false;
     }
 }

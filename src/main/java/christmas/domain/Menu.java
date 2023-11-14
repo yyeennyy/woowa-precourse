@@ -1,6 +1,6 @@
 package christmas.domain;
 
-import christmas.constant.Category;
+import christmas.setting.Category;
 
 public enum Menu {
     양송이수프(Category.애피타이저,  "양송이수프", 6000),
@@ -14,7 +14,8 @@ public enum Menu {
     아이스크림(Category.디저트, "아이스크림", 5000),
     제로콜라(Category.음료, "제로콜라", 3000),
     레드와인(Category.음료, "레드와인", 60000),
-    샴페인(Category.음료, "샴페인", 25000);
+    샴페인(Category.음료, "샴페인", 25000),
+    SPECIAL_MENU(Menu.샴페인.getCategory(), Menu.샴페인.get(), Menu.샴페인.getPrice());
 
     private final Category category;
     private final String name;
