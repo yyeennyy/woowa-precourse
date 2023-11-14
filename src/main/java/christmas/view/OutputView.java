@@ -29,20 +29,10 @@ public class OutputView {
         newLine();
     }
 
-    public int priceBeforeBenefits(List<Order> orders) {
+    public void printPriceBeforeBenefits(int price) {
         System.out.println(Message.GUIDE_OF_ORIGIN_PRICE.get());
-        int totalPrice = getTotalPrice(orders);
-        System.out.println(Util.toMoneyFormat(totalPrice));
+        System.out.println(Util.toMoneyFormat(price));
         newLine();
-        return totalPrice;
-    }
-
-    private int getTotalPrice(List<Order> orders) {
-        int totalPrice = 0;
-        for (Order order : orders) {
-            totalPrice += Menu.getPrice(order.getMenu()) * order.getCount();
-        }
-        return totalPrice;
     }
 
     public void freeMenu(Benefits benefits) {

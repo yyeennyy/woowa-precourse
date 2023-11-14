@@ -1,6 +1,7 @@
 package christmas.domain;
 
 import christmas.Util;
+import christmas.constant.Category;
 import christmas.constant.Message;
 import christmas.constant.SpecialDay;
 
@@ -79,7 +80,7 @@ public class Benefits {
         // 디저트 메뉴 개수 세기
         int count = 0;
         for (Order order : orders) {
-            if (Menu.getCategory(order.getMenu()).equals("디저트")) {
+            if (Menu.getCategory(order.getMenu()).equals(Category.디저트)) {
                 count += order.getCount();
             }
         }
@@ -96,7 +97,7 @@ public class Benefits {
         // 메인 메뉴 개수 세기
         int count = 0;
         for (Order order : orders) {
-            if (Menu.getCategory(order.getMenu()).equals("메인")) {
+            if (Menu.getCategory(order.getMenu()).equals(Category.메인)) {
                 count++;
             }
         }

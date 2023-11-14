@@ -1,12 +1,11 @@
 package christmas;
 
-import christmas.constant.Message;
+import christmas.constant.Config;
 import christmas.domain.Benefits;
 import christmas.domain.Menu;
 import christmas.domain.Order;
 import christmas.view.InputView;
 import christmas.view.OutputView;
-
 import java.util.List;
 
 public class EventController {
@@ -43,11 +42,8 @@ public class EventController {
     }
 
     public void setBenefits() {
-        int totalPrice = 0;
-        for (Order order : orders) {
-            totalPrice += Menu.getPrice(order.getMenu()) * order.getCount();
-        }
-        if (totalPrice >= 10000) {
+        int totalPrice = getTotalPrice();
+        if (totalPrice >= Config.BENEFIT_THRESHOLD.get()) {
             benefits = new Benefits();
             benefits.setChristmas(date);
             benefits.setFreeMenu(totalPrice);
@@ -55,18 +51,27 @@ public class EventController {
             benefits.setWeekendMain(date, orders);
             benefits.setSpecial(date);
 
-            benefits.setBadge(); // 총혜택금액에 따라서 제공되는 배지가 다름
+            benefits.setBadge();
         }
     }
 
+    private int getTotalPrice() {
+        int totalPrice = 0;
+        for (Order order : orders) {
+            totalPrice += Menu.getPrice(order.getMenu()) * order.getCount();
+        }
+        return totalPrice;
+    }
+
     public void previewBenefits() {
+        int originPrice = getTotalPrice();
         outputView.startToGuideBenefits();
         outputView.orderedMenu(orders);
-        int totalPrice = outputView.priceBeforeBenefits(orders);
+        outputView.printPriceBeforeBenefits(originPrice);
         outputView.freeMenu(benefits);
         outputView.benefitsList(benefits);
         outputView.totalBenefitsMoney(benefits);
-        outputView.priceAfterBenefits(totalPrice, benefits);
+        outputView.priceAfterBenefits(originPrice, benefits);
         outputView.aboutBadge(benefits);
     }
 }
