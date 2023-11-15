@@ -11,8 +11,12 @@ import java.util.Set;
 
 public class Order {
     private final List<OrderItem> orderItems;
+    private static final int ZERO = 0;
 
     private Order(List<OrderItem> orderItems) throws IllegalArgumentException {
+        if (orderItems.size() == ZERO) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_FORMAT.get());
+        }
         if (isOnlyDrinkMenu(orderItems)) {
             throw new IllegalArgumentException(ErrorMessage.DRINK_ONLY.get());
         }
@@ -35,7 +39,7 @@ public class Order {
     }
 
     public static Order of(List<OrderItem> orderItems) throws IllegalArgumentException {
-        return new Order(orderItems);
+        return new Order(Collections.unmodifiableList(orderItems));
     }
 
     public List<OrderItem> getOrderItems() {

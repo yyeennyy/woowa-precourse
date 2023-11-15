@@ -45,8 +45,6 @@ public class EventController {
         }
     }
 
-
-
     public void printBenefits() {
         int originAmount = order.getOriginAmount();
         outputView.startToGuideBenefits();

@@ -4,6 +4,7 @@ import camp.nextstep.edu.missionutils.Console;
 import christmas.domain.Order;
 import christmas.domain.OrderItem;
 import christmas.Validator;
+import christmas.setting.ErrorMessage;
 import christmas.setting.InputConfig;
 import christmas.setting.Message;
 import christmas.domain.Dish;
@@ -22,16 +23,20 @@ public class InputView {
 
     public Order orderMenu() throws IllegalArgumentException {
         System.out.println(Message.INPUT_MENU.get());
-        String userOrderInput = Console.readLine();
+        String userOrderInput;
+        userOrderInput = Console.readLine();
         return getOrder(userOrderInput);
     }
 
-    private Order getOrder(String input) throws IllegalArgumentException {
+    Order getOrder(String input) throws IllegalArgumentException {
         List<String> orderInputs = List.of(input.split(InputConfig.ORDER_MENU_DELIMITER.get()));
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (String orderInput : orderInputs) {
             List<String> menuAndCount = List.of(orderInput.split(InputConfig.MENU_AND_COUNT_DELIMITER.get()));
+            if (menuAndCount.size() != 2) {
+                throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_FORMAT.get());
+            }
             Dish dish = Dish.of(menuAndCount.get(0));
             int count = OrderItem.checkOrderCount(menuAndCount.get(1));
             OrderItem orderItem = OrderItem.from(dish, count);

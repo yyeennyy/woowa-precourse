@@ -70,7 +70,7 @@ public class Benefits {
 
     public String getFreeMenu() {
         if (freeMenu != null) {
-            return freeMenu.getMenuName() + Unit.SPACE.get() + freeMenu.getCount() + Unit.COUNT.get();
+            return freeMenu.toString();
         }
         return Unit.EMPTY_STRING.get();
     }

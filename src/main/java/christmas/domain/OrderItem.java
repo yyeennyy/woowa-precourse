@@ -3,12 +3,14 @@ package christmas.domain;
 import christmas.setting.ErrorMessage;
 import christmas.setting.EventConfig;
 import christmas.setting.Menu;
+import christmas.setting.Unit;
 
 import java.util.Objects;
 
 public class OrderItem {
     private final Dish dish;
     private final int count;
+    private static final int ZERO = 0;
 
     private OrderItem(Dish dish, int count) {
         this.dish = dish;
@@ -48,7 +50,15 @@ public class OrderItem {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_COUNT.get());
         }
+        if (count <= ZERO) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_COUNT.get());
+        }
         return count;
+    }
+
+    @Override
+    public String toString() {
+        return dish.getName() + Unit.SPACE.get() + count + Unit.COUNT.get();
     }
 
     @Override
