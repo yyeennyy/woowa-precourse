@@ -13,7 +13,6 @@ public class Order {
     private final List<OrderItem> orderItems;
 
     private Order(List<OrderItem> orderItems) throws IllegalArgumentException {
-
         if (isOnlyDrinkMenu(orderItems)) {
             throw new IllegalArgumentException(ErrorMessage.DRINK_ONLY.get());
         }
@@ -35,7 +34,7 @@ public class Order {
         return orderItems.size() != uniqueDishes.size();
     }
 
-    public static Order of(List<OrderItem> orderItems) {
+    public static Order of(List<OrderItem> orderItems) throws IllegalArgumentException {
         return new Order(orderItems);
     }
 
@@ -63,7 +62,13 @@ public class Order {
     }
 
     private static boolean isOrderCountOverflow(List<OrderItem> orderItems) {
-        return orderItems.size() > EventConfig.MAX_MENU_COUNT.get();
+        int count = 0;
+        for (OrderItem orderItem : orderItems) {
+            count += orderItem.getCount();
+            if (count > EventConfig.MAX_MENU_COUNT.get()) {
+                return true;
+            }
+        }
+        return false;
     }
-
 }
