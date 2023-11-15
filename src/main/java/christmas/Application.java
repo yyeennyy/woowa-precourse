@@ -9,6 +9,6 @@ public class Application {
         eventController.inputOrder();
 
         eventController.setBenefits();
-        eventController.previewBenefits();
+        eventController.printBenefits();
     }
 }

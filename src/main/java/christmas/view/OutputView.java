@@ -80,7 +80,7 @@ public class OutputView {
 
     public void aboutBadge(Benefits benefits) {
         System.out.println(Message.GUIDE_EVENT_BADGE.get());
-        if (benefits == null) {
+        if (benefits == null || benefits.getBadge() == null) {
             System.out.println(Message.NOT_EXIST.get());
             newLine();
             return;

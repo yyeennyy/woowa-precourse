@@ -71,4 +71,12 @@ public class Order {
         }
         return false;
     }
+
+    public int getOriginAmount() {
+        int sum = 0;
+        for (OrderItem orderItem : this.orderItems) {
+            sum += Menu.getPrice(orderItem.getMenuName()) * orderItem.getCount();
+        }
+        return sum;
+    }
 }

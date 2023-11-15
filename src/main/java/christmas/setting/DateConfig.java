@@ -15,6 +15,8 @@ public class DateConfig {
     public static final Set<Integer> THU_SET = new HashSet<>(Arrays.asList(7, 14, 21, 28));
 
     public static final int CHRISTMAS = 25;
+    public static final int FIRST_DAY = 1;
+
     public static final int SECOND_DAY = 2;
     private static final List<Integer> specials = List.of(3, 10, 17, 24, CHRISTMAS, 31);
 

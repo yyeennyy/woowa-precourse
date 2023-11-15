@@ -12,6 +12,22 @@ public class Benefits {
     private Badge badge;
     private static final String colon = ": ";
 
+    Benefits() {
+    }
+
+    public static Benefits from(Order order, int date) {
+        Benefits benefits = new Benefits();
+        if (order.getOriginAmount() >= EventConfig.BENEFIT_THRESHOLD.get()) {
+            benefits.setChristmas(date);
+            benefits.setFreeMenu(order.getOriginAmount());
+            benefits.setWeekdayDessert(date, order);
+            benefits.setWeekendMain(date, order);
+            benefits.setSpecial(date);
+            benefits.setBadge();
+        }
+        return benefits;
+    }
+
     public String getBenefitsSummary() {
         String summary = getDiscountSummary(DiscountPolicy.CHRISTMAS, christmas) +
                 getDiscountSummary(DiscountPolicy.WEEKDAY, weekdayDessert) +
@@ -63,9 +79,11 @@ public class Benefits {
         return this.badge;
     }
 
-    public void setChristmas(int date) {
+    private void setChristmas(int date) {
         int discount = DiscountPolicy.CHRISTMAS_INIT.getAmount();
-
+        if (date == DateConfig.FIRST_DAY) {
+            this.christmas = discount; return;
+        }
         for (int i = DateConfig.SECOND_DAY; i <= DateConfig.CHRISTMAS; i++) {
             discount += DiscountPolicy.CHRISTMAS.getAmount();
             if (i == date) {
@@ -76,7 +94,8 @@ public class Benefits {
         this.christmas = discount;
     }
 
-    public void setWeekdayDessert(int date, Order order) {
+    private void setWeekdayDessert(int date, Order order) {
+        // 가정: 모든 디저트 메뉴는 할인액 이상이다.
         int count = order.countMenuByCategory(Category.디저트);
         if (!DateConfig.isWeekend(date)) {
             this.weekdayDessert = DiscountPolicy.WEEKDAY.getAmount() * count;
@@ -85,7 +104,8 @@ public class Benefits {
         this.weekdayDessert = 0;
     }
 
-    public void setWeekendMain(int date, Order order) {
+    private void setWeekendMain(int date, Order order) {
+        // 가정: 모든 메인 메뉴는 할인액 이상이다.
         int count = order.countMenuByCategory(Category.메인);
         if (DateConfig.isWeekend(date)) {
             this.weekendMain = DiscountPolicy.WEEKEND.getAmount() * count;
@@ -94,7 +114,7 @@ public class Benefits {
         this.weekendMain = 0;
     }
 
-    public void setSpecial(int date) {
+    private void setSpecial(int date) {
         if (DateConfig.isSpecial(date)) {
             this.special = DiscountPolicy.SPECIAL.getAmount();
             return;
@@ -102,7 +122,7 @@ public class Benefits {
         this.special = 0;
     }
 
-    public void setFreeMenu(int originAmount) {
+    private void setFreeMenu(int originAmount) {
         if (originAmount >= EventConfig.GIFT_THRESHOLD.get()) {
             this.freeMenu = OrderItem.getSpecialMenu();
             return;
@@ -110,7 +130,7 @@ public class Benefits {
         this.freeMenu = null;
     }
 
-    public void setBadge() {
+    private void setBadge() {
         int benefitAmount = getAllBenefits();
         if (canBadge(benefitAmount, Badge.SANTA)) return;
         if (canBadge(benefitAmount, Badge.TREE)) return;
@@ -118,7 +138,7 @@ public class Benefits {
         this.badge = null;
     }
 
-    private boolean canBadge(int benefitAmount, Badge badge) {
+    boolean canBadge(int benefitAmount, Badge badge) {
         if (benefitAmount >= badge.getThreshold()) {
             this.badge = badge;
             return true;
