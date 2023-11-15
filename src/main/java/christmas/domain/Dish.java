@@ -1,26 +1,22 @@
 package christmas.domain;
 
-import christmas.setting.ErrorMessage;
 import christmas.setting.Menu;
 
 import java.util.Objects;
 
 public class Dish {
-    private final String dish;
+    private final Menu menu;
 
-    private Dish(String dishName) {
-        if (!Menu.exist(dishName)) {
-            throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_NAME.get());
-        }
-        this.dish = dishName;
+    private Dish(String dishName) throws IllegalArgumentException {
+        this.menu = Menu.get(dishName);
     }
 
     public static Dish of(String dishName) {
         return new Dish(dishName);
     }
 
-    public String get() {
-        return dish;
+    public String getName() {
+        return menu.get();
     }
 
     @Override
@@ -28,11 +24,11 @@ public class Dish {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Dish dish1 = (Dish) o;
-        return Objects.equals(dish, dish1.dish);
+        return Objects.equals(menu, dish1.menu);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dish);
+        return Objects.hash(menu);
     }
 }

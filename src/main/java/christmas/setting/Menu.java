@@ -25,13 +25,13 @@ public enum Menu {
         this.price = price;
     }
 
-    public static boolean exist(String name) {
+    public static Menu get(String name) throws IllegalArgumentException {
         for (Menu menu : Menu.values()) {
             if (menu.get().equals(name)) {
-                return true;
+                return menu;
             }
         }
-        return false;
+        throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_NAME.get());
     }
 
     public static Category getCategory(String menuName) {

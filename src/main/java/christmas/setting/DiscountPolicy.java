@@ -6,18 +6,18 @@ public enum DiscountPolicy {
     WEEKDAY("평일 할인", 2023),
     WEEKEND("주말 할인", 2023),
     SPECIAL("특별 할인", 1000),
-    GIFT("증정 이벤트", 0);
+    GIFT("증정 이벤트", 1);
 
     private final String policy;
-    private final int discount;
+    private final int amount;
 
-    DiscountPolicy(String policy, int discount) {
+    DiscountPolicy(String policy, int amount) {
         this.policy = policy;
-        this.discount = discount;
+        this.amount = amount;
     }
 
-    public int getDiscount() {
-        return discount;
+    public int getAmount() {
+        return this.amount;
     }
 
     public String get() {

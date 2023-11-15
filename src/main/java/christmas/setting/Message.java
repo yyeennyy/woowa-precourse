@@ -15,6 +15,7 @@ public enum Message {
     GUIDE_OF_BENEFITS_PRICE("<할인 후 예상 결제 금액>"),
     GUIDE_EVENT_BADGE("<12월 이벤트 배지>"),
     NOT_EXIST("없음"),
+    ZERO_AMOUNT("0원"),
     NOT_EVENT_TARGET("총주문 금액 10,000원 이상부터 이벤트가 적용됩니다.");
 
     private final String message;

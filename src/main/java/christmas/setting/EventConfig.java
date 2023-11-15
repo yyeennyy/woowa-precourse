@@ -5,7 +5,8 @@ public enum EventConfig {
     BENEFIT_THRESHOLD(10000),
     GIFT_THRESHOLD(120000),
     ZERO_PRICE(0),
-    NEGATIVE_SIGN(-1);
+    NEGATIVE_SIGN(-1),
+    GIFT_COUNT(1);
 
 
     private final int value;

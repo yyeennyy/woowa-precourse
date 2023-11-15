@@ -8,7 +8,7 @@ public class Benefits {
     private int weekdayDessert;
     private int weekendMain;
     private int special;
-    private Menu freeMenu;
+    private OrderItem freeMenu;
     private Badge badge;
     private static final String colon = ": ";
 
@@ -26,24 +26,24 @@ public class Benefits {
         if (discountAmount != EventConfig.ZERO_PRICE.get()) {
             sb.append(policy.get()).append(colon);
             sb.append(Util.toMoneyFormat(discountAmount * EventConfig.NEGATIVE_SIGN.get()));
-            sb.append(Util.newLine());
+            sb.append(Unit.NEW_LINE.get());
         }
         return sb.toString();
     }
 
-    private String getDiscountSummary(DiscountPolicy policy, Menu menu) {
+    private String getDiscountSummary(DiscountPolicy policy, OrderItem giftItem) {
         StringBuilder sb = new StringBuilder();
-        if (menu != null) {
+        if (giftItem != null) {
             sb.append(policy.get()).append(colon);
-            sb.append(Util.toMoneyFormat(menu.getPrice() * EventConfig.NEGATIVE_SIGN.get()));
-            sb.append(Util.newLine());
+            sb.append(Util.toMoneyFormat(giftItem.getDishPrice() * EventConfig.NEGATIVE_SIGN.get()));
+            sb.append(Unit.NEW_LINE.get());
         }
         return sb.toString();
     }
 
     public int getAllBenefits() {
         if (freeMenu != null) {
-            return (christmas + weekdayDessert + weekendMain + special + freeMenu.getPrice());
+            return (christmas + weekdayDessert + weekendMain + special + freeMenu.getDishPrice());
         }
         return getEffectiveDiscount();
     }
@@ -54,9 +54,9 @@ public class Benefits {
 
     public String getFreeMenu() {
         if (freeMenu != null) {
-            return freeMenu.get();
+            return freeMenu.getMenuName() + Unit.SPACE.get() + freeMenu.getCount() + Unit.COUNT.get();
         }
-        return Message.NOT_EXIST.get();
+        return Unit.EMPTY_STRING.get();
     }
 
     public Badge getBadge() {
@@ -64,10 +64,10 @@ public class Benefits {
     }
 
     public void setChristmas(int date) {
-        int discount = DiscountPolicy.CHRISTMAS_INIT.getDiscount();
+        int discount = DiscountPolicy.CHRISTMAS_INIT.getAmount();
 
         for (int i = SpecialDates.SECOND_DAY; i <= SpecialDates.CHRISTMAS; i++) {
-            discount += DiscountPolicy.CHRISTMAS.getDiscount();
+            discount += DiscountPolicy.CHRISTMAS.getAmount();
             if (i == date) {
                 break;
             }
@@ -79,7 +79,7 @@ public class Benefits {
     public void setWeekdayDessert(int date, Order order) {
         int count = order.countMenuByCategory(Category.디저트);
         if (!Util.isWeekend(date)) {
-            this.weekdayDessert = DiscountPolicy.WEEKDAY.getDiscount() * count;
+            this.weekdayDessert = DiscountPolicy.WEEKDAY.getAmount() * count;
             return;
         }
         this.weekdayDessert = 0;
@@ -88,7 +88,7 @@ public class Benefits {
     public void setWeekendMain(int date, Order order) {
         int count = order.countMenuByCategory(Category.메인);
         if (Util.isWeekend(date)) {
-            this.weekendMain = DiscountPolicy.WEEKEND.getDiscount() * count;
+            this.weekendMain = DiscountPolicy.WEEKEND.getAmount() * count;
             return;
         }
         this.weekendMain = 0;
@@ -96,7 +96,7 @@ public class Benefits {
 
     public void setSpecial(int date) {
         if (SpecialDates.isSpecial(date)) {
-            this.special = DiscountPolicy.SPECIAL.getDiscount();
+            this.special = DiscountPolicy.SPECIAL.getAmount();
             return;
         }
         this.special = 0;
@@ -104,7 +104,7 @@ public class Benefits {
 
     public void setFreeMenu(int originAmount) {
         if (originAmount >= EventConfig.GIFT_THRESHOLD.get()) {
-            this.freeMenu = Menu.SPECIAL_MENU;
+            this.freeMenu = OrderItem.getSpecialMenu();
             return;
         }
         this.freeMenu = null;

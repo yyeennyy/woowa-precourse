@@ -1,6 +1,9 @@
 package christmas.domain;
 
 import christmas.setting.ErrorMessage;
+import christmas.setting.EventConfig;
+import christmas.setting.Menu;
+
 import java.util.Objects;
 
 public class OrderItem {
@@ -16,8 +19,14 @@ public class OrderItem {
         return new OrderItem(dish, count);
     }
 
-    public String getMenu() {
-        return dish.get();
+    public static OrderItem getSpecialMenu() {
+        Menu special = Menu.SPECIAL_MENU;
+        int giftCount = EventConfig.GIFT_COUNT.get();
+        return new OrderItem(Dish.of(special.get()), giftCount);
+    }
+
+    public String getMenuName() {
+        return dish.getName();
     }
 
     public int getCount() {
@@ -26,6 +35,10 @@ public class OrderItem {
 
     public Dish getDish() {
         return dish;
+    }
+
+    public int getDishPrice() {
+        return Menu.getPrice(dish.getName());
     }
 
     public static int checkOrderCount(String countInput) throws IllegalArgumentException {

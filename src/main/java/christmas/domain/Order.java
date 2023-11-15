@@ -46,7 +46,7 @@ public class Order {
     public int countMenuByCategory(Category category) {
         int count = 0;
         for (OrderItem orderItem : this.orderItems) {
-            if (Menu.getCategory(orderItem.getMenu()).equals(category)) {
+            if (Menu.getCategory(orderItem.getMenuName()).equals(category)) {
                 count += orderItem.getCount();
             }
         }
@@ -55,7 +55,7 @@ public class Order {
 
     private static boolean isOnlyDrinkMenu(List<OrderItem> orderItems) {
         for (OrderItem orderItem : orderItems) {
-            if (!Menu.getCategory(orderItem.getMenu()).equals(Category.음료)) {
+            if (!Menu.getCategory(orderItem.getMenuName()).equals(Category.음료)) {
                 return false;
             }
         }

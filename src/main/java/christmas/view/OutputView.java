@@ -21,7 +21,7 @@ public class OutputView {
     public void orderedMenu(Order order) {
         System.out.println(Message.GUIDE_OF_MENU.get());
         for (OrderItem orderItem : order.getOrderItems()) {
-            System.out.printf("%s %d%s\n", orderItem.getMenu(), orderItem.getCount(), Unit.COUNT.get());
+            System.out.printf("%s %d%s\n", orderItem.getMenuName(), orderItem.getCount(), Unit.COUNT.get());
         }
         newLine();
     }
@@ -34,12 +34,14 @@ public class OutputView {
 
     public void freeMenu(Benefits benefits) {
         System.out.println(Message.GUIDE_OF_FREE_MENU.get());
-        if (benefits == null) {
+        if (benefits == null || benefits.getFreeMenu() == null) {
             System.out.println(Message.NOT_EXIST.get());
             newLine();
             return;
         }
-        System.out.println(benefits.getFreeMenu() + " 1개");
+        if (benefits.getFreeMenu() != null) {
+            System.out.println(benefits.getFreeMenu());
+        }
         newLine();
     }
 
@@ -57,7 +59,7 @@ public class OutputView {
     public void totalBenefitsMoney(Benefits benefits) {
         System.out.println(Message.GUIDE_OF_AMOUNT_OF_BENEFIT.get());
         if (benefits == null) {
-            System.out.println("0원");
+            System.out.println(Message.ZERO_AMOUNT.get());
             newLine();
             return;
         }

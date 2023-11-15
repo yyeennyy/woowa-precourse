@@ -57,7 +57,7 @@ public class EventController {
     private int getOriginAmount() {
         int sum = 0;
         for (OrderItem orderItem : order.getOrderItems()) {
-            sum += Menu.getPrice(orderItem.getMenu()) * orderItem.getCount();
+            sum += Menu.getPrice(orderItem.getMenuName()) * orderItem.getCount();
         }
         return sum;
     }
