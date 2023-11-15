@@ -1,7 +1,7 @@
 package christmas.setting;
 
 public enum Menu {
-    양송이수프(Category.애피타이저,  "양송이수프", 6000),
+    양송이수프(Category.애피타이저, "양송이수프", 6000),
     타파스(Category.애피타이저, "타파스", 5500),
     시저샐러드(Category.애피타이저, "시저샐러드", 8000),
     티본스테이크(Category.메인, "티본스테이크", 55000),
@@ -63,6 +63,4 @@ public enum Menu {
     public int getPrice() {
         return this.price;
     }
-
-
 }

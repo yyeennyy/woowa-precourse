@@ -4,7 +4,6 @@ import christmas.setting.ErrorMessage;
 import christmas.setting.EventConfig;
 import christmas.setting.Menu;
 import christmas.setting.Unit;
-
 import java.util.Objects;
 
 public class OrderItem {

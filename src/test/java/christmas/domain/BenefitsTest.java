@@ -1,6 +1,6 @@
 package christmas.domain;
 
-import christmas.setting.*;
+import christmas.setting.Badge;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.util.List;

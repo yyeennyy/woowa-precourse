@@ -1,8 +1,8 @@
 package christmas;
 
+import christmas.domain.Benefits;
 import christmas.domain.Order;
 import christmas.setting.EventConfig;
-import christmas.domain.Benefits;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 

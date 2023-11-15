@@ -5,6 +5,7 @@ public enum InputConfig {
     MENU_AND_COUNT_DELIMITER("-");
 
     private final String format;
+
     InputConfig(String format) {
         this.format = format;
     }
@@ -12,6 +13,4 @@ public enum InputConfig {
     public String get() {
         return format;
     }
-
-
 }

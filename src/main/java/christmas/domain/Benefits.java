@@ -1,7 +1,12 @@
 package christmas.domain;
 
 import christmas.Util;
-import christmas.setting.*;
+import christmas.setting.Badge;
+import christmas.setting.EventConfig;
+import christmas.setting.DiscountPolicy;
+import christmas.setting.Unit;
+import christmas.setting.DateConfig;
+import christmas.setting.Category;
 
 public class Benefits {
     private int christmas;
@@ -82,7 +87,8 @@ public class Benefits {
     private void setChristmas(int date) {
         int discount = DiscountPolicy.CHRISTMAS_INIT.getAmount();
         if (date == DateConfig.FIRST_DAY) {
-            this.christmas = discount; return;
+            this.christmas = discount;
+            return;
         }
         for (int i = DateConfig.SECOND_DAY; i <= DateConfig.CHRISTMAS; i++) {
             discount += DiscountPolicy.CHRISTMAS.getAmount();

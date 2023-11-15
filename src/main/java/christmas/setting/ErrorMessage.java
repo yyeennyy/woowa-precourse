@@ -9,7 +9,6 @@ public enum ErrorMessage {
     OVERFLOW_MENU_COUNT("메뉴는 한 번에 최대 %d개까지만 주문할 수 있습니다."),
     DRINK_ONLY("음료만 주문할 수 없습니다.");
 
-
     private final String message;
     private static final String PREFIX = "[ERROR]";
     private static final String RETRY = "다시 입력해 주세요.";

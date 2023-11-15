@@ -24,5 +24,4 @@ public class Validator {
     public static int checkInteger(String input) throws NumberFormatException {
         return Integer.parseInt(input);
     }
-
 }

@@ -8,7 +8,6 @@ public enum EventConfig {
     NEGATIVE_SIGN(-1),
     GIFT_COUNT(1);
 
-
     private final int value;
 
     EventConfig(int value) {

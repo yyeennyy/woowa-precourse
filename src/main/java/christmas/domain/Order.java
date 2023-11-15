@@ -1,8 +1,8 @@
 package christmas.domain;
 
 import christmas.setting.Category;
-import christmas.setting.EventConfig;
 import christmas.setting.ErrorMessage;
+import christmas.setting.EventConfig;
 import christmas.setting.Menu;
 import java.util.Collections;
 import java.util.HashSet;

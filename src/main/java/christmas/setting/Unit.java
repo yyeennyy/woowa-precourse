@@ -7,7 +7,6 @@ public enum Unit {
     EMPTY_STRING(""),
     NEW_LINE("\n");
 
-
     private final String unit;
 
     Unit(String unit) {

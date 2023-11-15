@@ -1,7 +1,6 @@
 package christmas;
 
 import christmas.setting.Unit;
-
 import java.text.DecimalFormat;
 
 public class Util {
@@ -10,5 +9,4 @@ public class Util {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         return decimalFormat.format(number) + Unit.WON.get();
     }
-
 }

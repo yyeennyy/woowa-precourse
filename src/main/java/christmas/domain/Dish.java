@@ -1,7 +1,6 @@
 package christmas.domain;
 
 import christmas.setting.Menu;
-
 import java.util.Objects;
 
 public class Dish {
