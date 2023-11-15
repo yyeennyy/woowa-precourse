@@ -2,7 +2,6 @@ package christmas.domain;
 
 import christmas.Util;
 import christmas.setting.*;
-import java.util.List;
 
 public class Benefits {
     private int christmas;
@@ -12,7 +11,6 @@ public class Benefits {
     private Menu freeMenu;
     private Badge badge;
     private static final String colon = ": ";
-    private static final int sign = -1;
 
     public String getBenefitsSummary() {
         String summary = getDiscountSummary(DiscountPolicy.CHRISTMAS, christmas) +
@@ -25,9 +23,9 @@ public class Benefits {
 
     private String getDiscountSummary(DiscountPolicy policy, int discountAmount) {
         StringBuilder sb = new StringBuilder();
-        if (discountAmount != Config.ZERO_PRICE.get()) {
+        if (discountAmount != EventConfig.ZERO_PRICE.get()) {
             sb.append(policy.get()).append(colon);
-            sb.append(Util.toMoneyFormat(discountAmount * sign));
+            sb.append(Util.toMoneyFormat(discountAmount * EventConfig.NEGATIVE_SIGN.get()));
             sb.append(Util.newLine());
         }
         return sb.toString();
@@ -37,7 +35,7 @@ public class Benefits {
         StringBuilder sb = new StringBuilder();
         if (menu != null) {
             sb.append(policy.get()).append(colon);
-            sb.append(Util.toMoneyFormat(menu.getPrice() * sign));
+            sb.append(Util.toMoneyFormat(menu.getPrice() * EventConfig.NEGATIVE_SIGN.get()));
             sb.append(Util.newLine());
         }
         return sb.toString();
@@ -78,8 +76,8 @@ public class Benefits {
         this.christmas = discount;
     }
 
-    public void setWeekdayDessert(int date, List<Order> orders) {
-        int count = countMenuByCategory(Category.디저트, orders);
+    public void setWeekdayDessert(int date, Order order) {
+        int count = order.countMenuByCategory(Category.디저트);
         if (!Util.isWeekend(date)) {
             this.weekdayDessert = DiscountPolicy.WEEKDAY.getDiscount() * count;
             return;
@@ -87,8 +85,8 @@ public class Benefits {
         this.weekdayDessert = 0;
     }
 
-    public void setWeekendMain(int date, List<Order> orders) {
-        int count = countMenuByCategory(Category.메인, orders);
+    public void setWeekendMain(int date, Order order) {
+        int count = order.countMenuByCategory(Category.메인);
         if (Util.isWeekend(date)) {
             this.weekendMain = DiscountPolicy.WEEKEND.getDiscount() * count;
             return;
@@ -96,18 +94,8 @@ public class Benefits {
         this.weekendMain = 0;
     }
 
-    private int countMenuByCategory(Category category, List<Order> orders) {
-        int count = 0;
-        for (Order order : orders) {
-            if (Menu.getCategory(order.getMenu()).equals(category)) {
-                count += order.getCount();
-            }
-        }
-        return count;
-    }
-
     public void setSpecial(int date) {
-        if (SpecialDates.isSpecialDay(date)) {
+        if (SpecialDates.isSpecial(date)) {
             this.special = DiscountPolicy.SPECIAL.getDiscount();
             return;
         }
@@ -115,7 +103,7 @@ public class Benefits {
     }
 
     public void setFreeMenu(int originAmount) {
-        if (originAmount >= Config.GIFT_THRESHOLD.get()) {
+        if (originAmount >= EventConfig.GIFT_THRESHOLD.get()) {
             this.freeMenu = Menu.SPECIAL_MENU;
             return;
         }

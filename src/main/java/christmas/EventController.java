@@ -1,18 +1,18 @@
 package christmas;
 
-import christmas.setting.Config;
-import christmas.domain.Benefits;
-import christmas.domain.Menu;
 import christmas.domain.Order;
+import christmas.setting.EventConfig;
+import christmas.domain.Benefits;
+import christmas.setting.Menu;
+import christmas.domain.OrderItem;
 import christmas.view.InputView;
 import christmas.view.OutputView;
-import java.util.List;
 
 public class EventController {
     private final InputView inputView = new InputView();
     private final OutputView outputView = new OutputView();
     private int date;
-    private List<Order> orders;
+    private Order order;
     private Benefits benefits;
 
     public void startReservation() {
@@ -33,7 +33,7 @@ public class EventController {
     public void inputOrder() {
         while (true) {
             try {
-                orders = inputView.orderMenu();
+                order = inputView.orderMenu();
                 break;
             } catch (IllegalArgumentException e) {
                 outputView.print(e.getMessage());
@@ -43,12 +43,12 @@ public class EventController {
 
     public void setBenefits() {
         int originAmount = getOriginAmount();
-        if (originAmount >= Config.BENEFIT_THRESHOLD.get()) {
+        if (originAmount >= EventConfig.BENEFIT_THRESHOLD.get()) {
             benefits = new Benefits();
             benefits.setChristmas(date);
             benefits.setFreeMenu(originAmount);
-            benefits.setWeekdayDessert(date, orders);
-            benefits.setWeekendMain(date, orders);
+            benefits.setWeekdayDessert(date, order);
+            benefits.setWeekendMain(date, order);
             benefits.setSpecial(date);
             benefits.setBadge();
         }
@@ -56,8 +56,8 @@ public class EventController {
 
     private int getOriginAmount() {
         int sum = 0;
-        for (Order order : orders) {
-            sum += Menu.getPrice(order.getMenu()) * order.getCount();
+        for (OrderItem orderItem : order.getOrderItems()) {
+            sum += Menu.getPrice(orderItem.getMenu()) * orderItem.getCount();
         }
         return sum;
     }
@@ -65,7 +65,7 @@ public class EventController {
     public void previewBenefits() {
         int originAmount = getOriginAmount();
         outputView.startToGuideBenefits();
-        outputView.orderedMenu(orders);
+        outputView.orderedMenu(order);
         outputView.printAmountBeforeBenefits(originAmount);
         outputView.freeMenu(benefits);
         outputView.benefitsList(benefits);

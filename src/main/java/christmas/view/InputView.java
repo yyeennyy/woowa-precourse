@@ -2,12 +2,12 @@ package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import christmas.domain.Order;
+import christmas.domain.OrderItem;
 import christmas.Validator;
-import christmas.setting.Category;
-import christmas.setting.ErrorMessage;
+import christmas.setting.InputConfig;
 import christmas.setting.Message;
 import christmas.domain.Dish;
-import christmas.domain.Menu;
+
 import java.util.*;
 
 public class InputView {
@@ -20,54 +20,23 @@ public class InputView {
         return date;
     }
 
-    public List<Order> orderMenu() throws IllegalArgumentException {
+    public Order orderMenu() throws IllegalArgumentException {
         System.out.println(Message.INPUT_MENU.get());
-        List<String> orderInputs = List.of(Console.readLine().split(","));
-        Map<String, Integer> orderInfo = new LinkedHashMap<>();
-        for (String input : orderInputs) {
-            List<String> menuAndCount = List.of(input.split("-"));
-            String menu = menuAndCount.get(0);
-            // 메뉴판에 있는 메뉴만 가능
-            if (!Menu.exist(menu)) {
-                throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_NAME.get());
-            }
-            int count;
-            try {
-                count = Integer.parseInt(menuAndCount.get(1));
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException(ErrorMessage.INVALID_MENU_COUNT.get());
-            }
-            if(orderInfo.containsKey(menu)) {
-                throw new IllegalArgumentException(ErrorMessage.DUPLICATED_MENU.get());
-            }
-            orderInfo.put(menu, count);
-        }
-
-        List<Order> orders = new ArrayList<>();
-        int countSum = 0;
-        for (Map.Entry<String, Integer> menuAndCount : orderInfo.entrySet()) {
-            String menu = menuAndCount.getKey();
-            int count = menuAndCount.getValue();
-            countSum += count;
-            orders.add(new Order(new Dish(menu), count));
-        }
-        // 음료만 주문 불가
-        if (isDrinkOnly(orders)) {
-            throw new IllegalArgumentException(ErrorMessage.DRINK_ONLY.get());
-        }
-        // 20개까지 주문 가능
-        if (countSum > 20) {
-            throw new IllegalArgumentException(ErrorMessage.OVERFLOW_MENU_COUNT.get());
-        }
-        return orders;
+        String userOrderInput = Console.readLine();
+        return getOrder(userOrderInput);
     }
 
-    private boolean isDrinkOnly(List<Order> orders) {
-        for (Order order : orders) {
-            if (!Menu.getCategory(order.getMenu()).equals(Category.음료)) {
-                return false;
-            }
+    private Order getOrder(String input) throws IllegalArgumentException {
+        List<String> orderInputs = List.of(input.split(InputConfig.ORDER_MENU_DELIMITER.get()));
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        for (String orderInput : orderInputs) {
+            List<String> menuAndCount = List.of(orderInput.split(InputConfig.MENU_AND_COUNT_DELIMITER.get()));
+            Dish dish = Dish.of(menuAndCount.get(0));
+            int count = OrderItem.checkOrderCount(menuAndCount.get(1));
+            OrderItem orderItem = OrderItem.from(dish, count);
+            orderItems.add(orderItem);
         }
-        return true;
+        return Order.of(orderItems);
     }
 }

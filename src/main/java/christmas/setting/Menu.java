@@ -1,6 +1,4 @@
-package christmas.domain;
-
-import christmas.setting.Category;
+package christmas.setting;
 
 public enum Menu {
     양송이수프(Category.애피타이저,  "양송이수프", 6000),

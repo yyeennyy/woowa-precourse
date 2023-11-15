@@ -1,12 +1,11 @@
 package christmas.view;
 
 import christmas.domain.Order;
+import christmas.domain.OrderItem;
 import christmas.Util;
 import christmas.setting.Message;
 import christmas.setting.Unit;
 import christmas.domain.Benefits;
-
-import java.util.List;
 
 public class OutputView {
 
@@ -19,10 +18,10 @@ public class OutputView {
         newLine();
     }
 
-    public void orderedMenu(List<Order> orders) {
+    public void orderedMenu(Order order) {
         System.out.println(Message.GUIDE_OF_MENU.get());
-        for (Order order : orders) {
-            System.out.printf("%s %d%s\n", order.getMenu(), order.getCount(), Unit.COUNT.get());
+        for (OrderItem orderItem : order.getOrderItems()) {
+            System.out.printf("%s %d%s\n", orderItem.getMenu(), orderItem.getCount(), Unit.COUNT.get());
         }
         newLine();
     }

@@ -6,6 +6,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 public class Util {
+
+
     public static String toMoneyFormat(int number) {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         return decimalFormat.format(number) + Unit.WON.get();

@@ -21,7 +21,7 @@ public enum ErrorMessage {
 
     public String get() {
         if (this == OVERFLOW_MENU_COUNT) {
-            return PREFIX + SPACE + String.format(message, Config.MAX_MENU_COUNT.get()) + SPACE + RETRY;
+            return PREFIX + SPACE + String.format(message, EventConfig.MAX_MENU_COUNT.get()) + SPACE + RETRY;
         }
         return PREFIX + SPACE + message + SPACE + RETRY;
     }
