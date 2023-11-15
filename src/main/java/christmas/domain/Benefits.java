@@ -66,7 +66,7 @@ public class Benefits {
     public void setChristmas(int date) {
         int discount = DiscountPolicy.CHRISTMAS_INIT.getAmount();
 
-        for (int i = SpecialDates.SECOND_DAY; i <= SpecialDates.CHRISTMAS; i++) {
+        for (int i = DateConfig.SECOND_DAY; i <= DateConfig.CHRISTMAS; i++) {
             discount += DiscountPolicy.CHRISTMAS.getAmount();
             if (i == date) {
                 break;
@@ -78,7 +78,7 @@ public class Benefits {
 
     public void setWeekdayDessert(int date, Order order) {
         int count = order.countMenuByCategory(Category.디저트);
-        if (!Util.isWeekend(date)) {
+        if (!DateConfig.isWeekend(date)) {
             this.weekdayDessert = DiscountPolicy.WEEKDAY.getAmount() * count;
             return;
         }
@@ -87,7 +87,7 @@ public class Benefits {
 
     public void setWeekendMain(int date, Order order) {
         int count = order.countMenuByCategory(Category.메인);
-        if (Util.isWeekend(date)) {
+        if (DateConfig.isWeekend(date)) {
             this.weekendMain = DiscountPolicy.WEEKEND.getAmount() * count;
             return;
         }
@@ -95,7 +95,7 @@ public class Benefits {
     }
 
     public void setSpecial(int date) {
-        if (SpecialDates.isSpecial(date)) {
+        if (DateConfig.isSpecial(date)) {
             this.special = DiscountPolicy.SPECIAL.getAmount();
             return;
         }
